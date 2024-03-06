@@ -2,6 +2,7 @@ package com.xmut.mapper;
 
 import com.xmut.pojo.User;
 import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
@@ -21,4 +22,10 @@ public interface UserMapper {
             @Result(property ="status",column ="user_status")
     })
     public User findUserByPhoneAndPassword(User user);
+
+    //通过id查询
+    @Select("select * from user where user_id=#{id}")
+    @ResultMap("userResult")
+    public User findById(Integer id);
+
 }

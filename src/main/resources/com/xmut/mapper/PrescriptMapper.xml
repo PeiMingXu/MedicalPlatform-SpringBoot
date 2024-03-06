@@ -4,17 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xmut.mapper.PrescriptMapper">
 
+
+
+    <resultMap id="prescriptResultMap" type="Prescript">
+        <id property="id" column="p_id"/>
+        <association property="user" javaType="User" column="p_user" select="com.xmut.mapper.UserMapper.findById"/>
+        <association property="user1" javaType="User" column="dc_id" select="com.xmut.mapper.UserMapper.findById"/>
+        <association property="user2" javaType="User" column="dr_id" select="com.xmut.mapper.UserMapper.findById"/>
+    </resultMap>
+
     <!--带条件的分页-->
-    <select id="findPages" resultType="Prescript">
+    <select id="findPages" resultMap="prescriptResultMap">
         select * from prescript
-        <trim prefix="where" prefixOverrides="and|or">
-            <if test="p_user!=null and p_user!='' and p_user.length!=0">
-                and p_user like concat("%",#{p_user},"%")
+        <where>
+            <if test="user != null and user != ''">
+                and user like concat('%', #{user}, '%')
             </if>
-            <if test="p_symptom!=null and p_symptom!='' and p_symptom.length!=0">
-                and p_symptom like concat("%",#{p_symptom},"%")
+            <if test="p_symptom != null and p_symptom != ''">
+                and p_symptom like concat('%', #{p_symptom}, '%')
             </if>
-        </trim>
+        </where>
     </select>
 
 

@@ -21,4 +21,11 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         return userMapper.findUserByPhoneAndPassword(user);
     }
+
+    //通过id查询
+    @Override
+    public User findById(Integer id) {
+        return userMapper.findById(id);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.xmut.controller;
 
+import com.xmut.entity.Result;
 import com.xmut.pojo.User;
 import com.xmut.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -36,6 +38,16 @@ public class UserController {
             model.addAttribute("msg","用户或者密码错误");
             return "login";
         }
+    }
+
+    //通过id获取用户信息
+    @RequestMapping("/findById")
+    @ResponseBody
+    public Result<User> findById(int id){
+
+        //调用service
+        User user = userService.findById(id);
+        return new Result<>(true,"", user);
     }
 
 }
