@@ -1,0 +1,13 @@
+th {
+    text-align: center; /* 或 left、right，根据需要调整 */
+}
+table {
+    width: 100%; /* 或其他适当的宽度值 */
+}
+td {
+    max-width: 80px; /* 适当的最大宽度值 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+

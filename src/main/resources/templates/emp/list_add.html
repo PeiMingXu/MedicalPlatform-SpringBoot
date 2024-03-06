@@ -1,0 +1,65 @@
+<!-- 新建员工/编辑信息 弹出框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" th:fragment="add_1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">添加员工</h4>
+			</div>
+			<div class="modal-body">
+				<form id="addForm">
+					<div class="clearfix">
+						<div class="col-xs-6">
+							<div class="form-group" style="position: relative;margin-bottom: 20px">
+								<label>LastName</label>
+								<input type="text" name="lastName" class="form-control" placeholder="姓名">
+								<span class="error-msg" style="color: red; position: absolute;"></span>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="form-group" style="position: relative;margin-bottom: 20px">
+								<label>Email</label>
+								<input type="email" name="email" class="form-control" placeholder="xx@qq.com">
+								<span class="error-msg" style="color: red; position: absolute;"></span>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="form-group" style="position: relative;margin-bottom: 20px">
+								<label>Gender</label></br>
+								<div class="radio-inline">
+									<input type="radio" name="gender" value="1"> 男
+								</div>
+								&nbsp;&nbsp;
+								<div class="radio-inline">
+									<input type="radio" name="gender" value="0"> 女
+								</div>
+								<span class="error-msg" style="color: red; position: absolute;"></span>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="form-group" style="position: relative;margin-bottom: 20px">
+								<label>Department</label>
+								<select class="form-control" name="department" size="1">
+									<option th:each="dept:${departments}" th:text="${dept.getDepartmentName()}" th:value="${dept.getId()}"></option>
+								</select>
+								<span class="error-msg" style="color: red; position: absolute;"></span>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="form-group" style="position: relative;margin-bottom: 20px">
+								<label>Birth</label>
+								<input type="text" id="dt" class="form-control" placeholder="时间" name="create_time">
+								<span class="error-msg" style="color: red; position: absolute;"></span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button id="btnSave" type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+

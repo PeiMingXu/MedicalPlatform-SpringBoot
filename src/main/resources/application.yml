@@ -1,0 +1,60 @@
+server:
+    port: 8080
+
+spring:
+  #数据库配置
+  datasource:
+      username: root
+      password: 53278410
+      #假设市区报错，增加一个市区配置
+      url: jdbc:mysql://localhost:3306/doctor?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+
+      #Spring Boot 默认是不注入这些属性值的，需要自己绑定
+      #druid 数据源专有配置
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+
+      #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+      #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
+      #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
+      filters: stat,wall,log4j
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  thymeleaf:
+      mode: HTML5
+      prefix: classpath:/templates/  #模板文件将从类路径（classpath）中的"/templates/"目录开始查找。
+      suffix: .html  #模板文件的期望后缀为".html"
+      encoding: utf-8
+      cache: false   #禁用Thymeleaf的模板缓存
+
+#整合mybatis
+mybatis:
+    mapper-locations: classpath:/mapper/*.xml    #mapper文件位置
+    type-aliases-package: com.xmut.pojo    # 实体类位置
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl    #输出SQL日志
+
+#分页插件配置
+pagehelper:
+    helper-dialect: mysql   # 指定分页插件使用哪种语言
+
+    reasonable: true #分页合理化参数，默认为false，当该值为true，pageNum<=0默认查询第一页，
+                     #pageNum>pages时会查询最后一页，false时直接根据参数进行查询
+
+
+    support-methods-arguments: true     # 默认为false, 为true时允许在运行时根据多数据源自动识别对应的方言进行分页
+
+
+    params: countSql    # 为了支持startPage(Object params)方法，增加该参数来配置参数映射，用于从对象中根据属性名取值，可以配置pageNum,pageSize,pageSizeZero, reasonable, 不配置映射是使用默认值， 默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmut.mapper.PrescriptMapper">
+
+    <!--带条件的分页-->
+    <select id="findPages" resultType="Prescript">
+        select * from prescript
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="p_user!=null and p_user!='' and p_user.length!=0">
+                and p_user like concat("%",#{p_user},"%")
+            </if>
+            <if test="p_symptom!=null and p_symptom!='' and p_symptom.length!=0">
+                and p_symptom like concat("%",#{p_symptom},"%")
+            </if>
+        </trim>
+    </select>
+
+
+</mapper>

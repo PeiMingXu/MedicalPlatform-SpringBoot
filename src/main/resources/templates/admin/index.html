@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Materialize is a Material Design Admin Template,It's modern, responsive and based on Material Design by Google.">
+    <meta name="keywords" content="materialize, admin template, dashboard template, flat admin template, responsive admin template, eCommerce dashboard, analytic dashboard">
+    <meta name="author" content="ThemeSelect">
+    <title>首页</title>
+    
+    <link rel="apple-touch-icon" th:href="@{/app-assets/images/favicon/apple-touch-icon-152x152.png}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/app-assets/images/favicon/favicon-32x32.png}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/my.css}">
+
+
+    <!-- BEGIN: VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" th:href="@{/app-assets/vendors/vendors.min.css}">
+
+    <!-- BEGIN: Page Level CSS-->
+    <link rel="stylesheet" type="text/css"  th:href="@{/app-assets/css/themes/vertical-menu-nav-dark-template/materialize.css}">
+    <link rel="stylesheet" type="text/css"  th:href="@{/app-assets/css/themes/vertical-menu-nav-dark-template/style.css}">
+
+</head>
+
+<body class="vertical-layout page-header-light vertical-menu-collapsible vertical-menu-nav-dark preload-transitions 2-columns   " data-open="click" data-menu="vertical-menu-nav-dark" data-col="2-columns">
+
+
+    <!--顶部导航-->
+    <div th:replace="~{commons/adminCommonts::topbar1}"></div>
+    
+
+    <!--侧边栏-->
+    <!--传递参数给组件-->
+    <div th:replace="~{commons/adminCommonts::sidebar1(active='index.html')}"></div>
+
+    <!-- 主页-->
+    <div id="main">
+        <div class="row">
+
+            <div class="col s12">
+                <div class="container">
+                            <div style="margin-bottom:10px" class="clearfix">
+
+                                <div style="float: left;">
+                                    <input id="btnAdd" type="button" value="添加药材" class="btn btn-success">
+                                </div>
+
+                                <div style="float: right;width: 300px;">
+                                    <form th:action="@{/admin}">
+                                        <div class="input-group">
+                                            <input type="text" name="d_name" class="form-control" placeholder="请输入你要查询药品名称">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="submit">
+                                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="bs-example" data-example-id="panel-without-body-with-table" >
+                                    <div class="panel panel-success" >
+                                        <!-- Default panel contents -->
+                                        <div class="panel-heading">
+                                            <span class="glyphicon glyphicon-th-list" aria-hidden="true" ></span>
+                                            药品信息
+                                        </div>
+
+                                        <!-- Table -->
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr >
+                                                <th>ID</th>
+                                                <th>名称</th>
+                                                <th>功效</th>
+                                                <th>用法用量</th>
+                                                <th>图片</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                            <tr th:each="put:${page.list}">
+                                                <td th:text="${put.d_id}"></td>
+                                                <td th:text="${put.d_name}"></td>
+                                                <td th:text="${put.d_indication}"></td>
+                                                <td th:text="${put.d_use}"></td>
+                                                <td>
+                                                    <img th:src="@{${'/upload/'+put.d_picture}}" width="100"
+                                                         height="100" alt="加载中...">
+                                                </td>
+
+                                                <td>
+                                                    <span th:text="${put.d_status == 1 ? '已上架' : '已下架'}"></span>
+                                                </td>
+
+                                                <td>
+                                                    <input th:uid="${put.d_id}" class="btn btn-primary btn-xs btn-edit"
+                                                           type="button" value="编辑">
+                                                    <!-- 当 put.d_status 为 1 时显示下架 -->
+                                                    <th:block  th:if="${put.d_status == 1}">
+                                                        <button th:uid="${put.d_id}" class="btn bg-olive btn-xs btn-delete"
+                                                                th:text="下架"></button>
+                                                    </th:block>
+
+                                                    <!-- 当 put.d_status 不为 1 时显示上架 -->
+                                                    <th:block th:if="${put.d_status != 1}">
+                                                        <button th:uid="${put.d_id}" class="btn bg-olive btn-xs btn-danger"
+                                                                th:text="上架"></button>
+                                                    </th:block>
+                                                    </td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--分页-->
+                            <div  th:replace="~{commons/pageCommonts::page}"></div>
+                            <br>
+
+                        </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 新建订单/编辑订单 弹出框 -->
+    <div class="modal fade modal-content" id="myModal" style="display:table;padding-right: 19px;">
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel" style="font-size: 18px;">添加药材</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div class="modal-body">
+            <form id="addForm" enctype="multipart/form-data" method="post">
+                <span><input type="hidden" id="d_id1" name="d_id1"></span>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">药材名称</label>
+                            <input type="text" class="form-control" style="font-size:13px;" placeholder="药材名称" name="d_name1" id="d_name1">
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">功能效果</label>
+                            <input type="text" class="form-control"  style="font-size:13px;" placeholder="功能效果" name="d_indication1" id="d_indication1">
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">用法用量</label>
+                            <input type="text" class="form-control"  style="font-size:13px;" placeholder="用法用量" name="d_use1" id="d_use1">
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Add additional form elements for the right side -->
+                        <div class="form-group">
+                            <label for="file1">药材图片</label>
+                            <input type="file" class="form-control-file" multiple="multiple" id="file1" name="file1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional form content can be added here -->
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button id="btnSave" type="button" class="btn btn-primary">保存</button>
+        </div>
+
+    </div>
+
+    <!-- 下架 弹出框 -->
+    <div class="modal fade modal-content" id="myModal1" style="display:table;padding-right: 19px;">
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel1" style="font-size: 18px;">下架药材</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div class="modal-body">
+            <form id="addForm1" enctype="multipart/form-data" method="post">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">药材ID</label>
+                            <input type="text" class="form-control" style="font-size:13px;" placeholder="药材ID"
+                                   name="d_id2" id="d_id2" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">药材名称</label>
+                            <input type="text" class="form-control" style="font-size:13px;" placeholder="药材名称"
+                                   name="d_name2" id="d_name2" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">功能效果</label>
+                            <input type="text" class="form-control"  style="font-size:13px;" placeholder="功能效果" name="d_indication2" id="d_indication2" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">用法用量</label>
+                            <input type="text" class="form-control"  style="font-size:13px;" placeholder="用法用量" name="d_use2" id="d_use2" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="file1">药材状态</label>
+                            <input type="text" class="form-control-file" style="font-size:13px;" id="d_status2" name="d_status2" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="file1">药材图片</label>
+                            <input type="text" class="form-control-file" style="font-size:13px;" id="d_picture2" name="d_picture2" readonly>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button id="btnSave2" type="button" class="btn btn-primary">下架</button>
+        </div>
+
+    </div>
+
+    <!-- 上架 弹出框 -->
+    <div class="modal fade modal-content" id="myModal2" style="display:table;padding-right: 19px;">
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel2" style="font-size: 18px;">上架药材</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div class="modal-body">
+            <form id="addForm2" enctype="multipart/form-data" method="post">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">药材ID</label>
+                            <input type="text" class="form-control" style="font-size:13px;" placeholder="药材ID"
+                                   name="d_id3" id="d_id3" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">药材名称</label>
+                            <input type="text" class="form-control" style="font-size:13px;" placeholder="药材名称"
+                                   name="d_name3" id="d_name3" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">功能效果</label>
+                            <input type="text" class="form-control"  style="font-size:13px;" placeholder="功能效果"
+                                   name="d_indication3" id="d_indication3" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="d_name1">用法用量</label>
+                            <input type="text" class="form-control"  style="font-size:13px;" placeholder="用法用量"
+                                   name="d_use3" id="d_use3" readonly>
+                            <span class="error-msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="file1">药材状态</label>
+                            <input type="text" class="form-control-file" style="font-size:13px;"
+                                   id="d_status3" name="d_status3" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="file1">药材图片</label>
+                            <input type="text" class="form-control-file" style="font-size:13px;"
+                                   id="d_picture3" name="d_picture3" readonly>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button id="btnSave3" type="button" class="btn btn-primary">上架</button>
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="content-overlay"></div>
+
+    <!-- END: Page Main-->
+    <!-- 底部-->
+    <div th:replace="~{commons/adminCommonts::dibu}"></div>
+
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+
+    <script th:src="@{/app-assets/js/vendors.min.js}"></script>
+
+    <script th:src="@{/plugins/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{/app-assets/js/plugins.js}"></script>
+
+
+    <script type="text/javascript">
+        var DELETE_ID;
+        var EDIT_ID;
+        $(function () {
+            bindBtnAddEvent();
+            bindBtnSaveEvent();
+
+            bindBtnShangEvent();
+            bindShangBtnEvent();
+
+            bindBtnXiaoEvent();
+            bindXiaoBtnEvent();
+
+            bindBtnEditEvent();
+        })
+
+        function bindBtnAddEvent() {
+            $('#btnAdd').click(function () {
+                //将正在编辑的ID设置为空
+                EDIT_ID=undefined;
+                //清空对话框中的数据
+                $('#addForm')[0].reset();
+                //设置对话框的标题
+                $("#myModalLabel").text("新建");
+                //点击新建按纽
+                $('#myModal').modal(); // 初始化模态框
+                $('#myModal').modal('open'); // 打开模态框
+
+            });
+        }
+        function bindBtnSaveEvent() {
+            $("#btnSave").click(function () {
+                $(".error-msg").empty(); //清楚错误信息
+                if (EDIT_ID){
+                    //编辑
+                    doEdit();
+                }else {
+                    //添加
+                    doAdd();
+                }
+            })
+        }
+
+        function doEdit() {
+            // 获取表单对象
+            var formData = new FormData();
+            formData.append("d_id1", EDIT_ID)
+            formData.append("d_name1", $("#d_name1").val());
+            formData.append("d_indication1", $("#d_indication1").val());
+            formData.append("d_use1", $("#d_use1").val());
+            formData.append("file1", $("#file1")[0].files[0]);
+            //控制台打印
+            console.log("d_name1:", formData.get("d_name1"));
+            console.log("d_indication1:", formData.get("d_indication1"));
+            console.log("d_use1:", formData.get("d_use1"));
+            console.log("file1:", formData.get("file1"));
+
+            if (formData.get("d_name1") === "") { // 如果药材名称为空
+                alert("请输入药材名称"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            if (formData.get("d_indication1") === "") { // 如果主治症状为空
+                alert("请输入主治症状"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            if (formData.get("d_use1") === "") { // 如果用法用量为空
+                alert("请输入用法用量"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            if (formData.get("file1").name === "") { // 如果药材图片为空
+                alert("请上传药材图片"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            console.log("你好啊啊")
+            console.log(formData)
+            // 发送ajax请求至后台控制层
+            $.ajax({
+                url:"/editByDrugs",
+                type: "POST",
+                data: formData, // 请求的数据
+                cache: false,
+                processData: false, // 不对表单数据进行序列化处理
+                contentType: false, // 让浏览器自动根据表单数据类型设置Content-Type
+                success:function (result) {
+                    if (result.success){
+                        alert("修改成功")
+                        //清空表单  $("addForm")是jQuery对象 ->  $("addForm")[0] DOM对象
+                        $("#addForm")[0].reset();
+                        //关闭对话框
+                        $('#myModal').modal("hide");
+                        //用JS页面的刷新
+                        location.reload();
+                    }else {
+                        if (res.tips){
+                            alert(res.tips)
+                        }else {
+                            $.each(res.error,function (name,data) {
+                                //console.log(name,data);
+                                $("#id_" + name).next().text(data[0])
+
+                            })
+                        }
+                    }
+                }
+            })
+        }
+
+        function doAdd() {
+            // 获取表单对象
+            var formData = new FormData();
+            formData.append("d_name1", $("#d_name1").val());
+            formData.append("d_indication1", $("#d_indication1").val());
+            formData.append("d_use1", $("#d_use1").val());
+            formData.append("file1", $("#file1")[0].files[0]);
+            //控制台打印
+            console.log("d_name1:", formData.get("d_name1"));
+            console.log("d_indication1:", formData.get("d_indication1"));
+            console.log("d_use1:", formData.get("d_use1"));
+            console.log("file1:", formData.get("file1"));
+
+            if (formData.get("d_name1") === "") { // 如果药材名称为空
+                alert("请输入药材名称"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            if (formData.get("d_indication1") === "") { // 如果主治症状为空
+                alert("请输入主治症状"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            if (formData.get("d_use1") === "") { // 如果用法用量为空
+                alert("请输入用法用量"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            if (formData.get("file1").name === "") { // 如果药材图片为空
+                alert("请上传药材图片"); // 弹出提示框
+                return false; // 阻止表单提交
+            }
+            //向后台发送信息
+            $.ajax({
+                url:'/drugs/addByDrugs',
+                type: "POST",
+                data: formData, // 请求的数据
+                cache: false,
+                processData: false, // 不对表单数据进行序列化处理
+                contentType: false, // 让浏览器自动根据表单数据类型设置Content-Type
+                success:function(result) { // 成功回调函数
+                    if (result.success) {
+                        //清空表单  $("addForm")是jQuery对象 ->  $("addForm")[0] DOM对象
+                        $("#addForm")[0].reset();
+                        //关闭对话框
+                        $('#myModal').modal("hide");
+                        //用JS页面的刷新
+                        location.reload();
+                        // 操作成功
+                        alert(result.msg);
+                        console.log("result.redirectUrl:",result.redirectUrl);
+                        window.location.href = result.redirectUrl;
+                    } else {
+                        // 操作失败
+                        alert(result.msg);
+                    }
+                },
+                error: function() {
+                    // 请求失败，提示网络错误
+                    alert('操作信息错误，请检查操作信息是否正确，稍后再试！');
+                }
+            })
+        }
+
+
+        function bindBtnShangEvent() {
+            $(".btn-delete").click(function () {
+                //清空对话框中的数据
+                $('#addForm1')[0].reset();
+
+                //获取当前ID并肤质给全局变量 EDIT_ID
+                DELETE_ID=$(this).attr("uid");
+                console.log(DELETE_ID)
+                $.ajax({
+                    url:"/drugs/findBy_Id/",
+                    type:"get",
+                    data:{
+                        uid:DELETE_ID
+                    },
+                    dataType:"JSON",
+                    success: function (result) {
+                        if (result.status === "success"){
+
+                            //将数据赋值到对话框的标签中去
+                            $("#d_id2").val(result.drugs.d_id);
+                            $("#d_name2").val(result.drugs.d_name);
+                            $("#d_indication2").val(result.drugs.d_indication);
+                            $("#d_use2").val(result.drugs.d_use);
+                            $("#d_status2").val(result.drugs.d_status);
+                            $("#d_picture2").val(result.drugs.d_picture);
+                            //修改对话框标题
+                            $("#myModalLabel1").text('下架药材')
+                            //点击编辑，显示对话框
+                            $('#myModal1').modal(); // 初始化模态框
+                            $('#myModal1').modal('open'); // 打开模态框
+
+                        }else {
+                            alert(result.message);
+                        }
+
+                    }
+                })
+            })
+        }
+        function bindShangBtnEvent() {
+            $("#btnSave2").click(function () {
+                var d_id = $("#d_id2").val();
+                var d_name = $("#d_name2").val();
+                var d_indication = $("#d_indication2").val();
+                var d_use = $("#d_use2").val();
+                var d_status = $("#d_status2").val();
+                var d_picture = $("#d_picture2").val();
+
+                //点击确认删除按钮
+                $.ajax({
+                    url:"/borrowDrugs",
+                    type:"GET",
+                    data:{
+                        d_id:d_id,
+                        d_name:d_name,
+                        d_indication:d_indication,
+                        d_use:d_use,
+                        d_picture:d_picture,
+                        d_status:d_status,
+                    },
+                    dataType: 'json',
+                    success:function(result) { // 成功回调函数
+                        if (result.success) {
+                            // 操作成功
+                            alert(result.msg);
+                            console.log("result.redirectUrl:",result.redirectUrl);
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            // 操作失败
+                            alert(result.msg);
+                        }
+                    },
+                    error: function() {
+                        // 请求失败，提示网络错误
+                        alert('操作信息错误，请检查操作信息是否正确，稍后再试！');
+                    }
+                })
+            })
+        }
+
+        function bindBtnXiaoEvent() {
+            $(".btn-danger").click(function () {
+                //清空对话框中的数据
+                $('#addForm1')[0].reset();
+
+                //获取当前ID并肤质给全局变量 EDIT_ID
+                DELETE_ID=$(this).attr("uid");
+                console.log(DELETE_ID)
+                $.ajax({
+                    url:"/drugs/findBy_Id/",
+                    type:"get",
+                    data:{
+                        uid:DELETE_ID
+                    },
+                    dataType:"JSON",
+                    success: function (result) {
+                        if (result.status === "success"){
+
+                            //将数据赋值到对话框的标签中去
+                            $("#d_id3").val(result.drugs.d_id);
+                            $("#d_name3").val(result.drugs.d_name);
+                            $("#d_indication3").val(result.drugs.d_indication);
+                            $("#d_use3").val(result.drugs.d_use);
+                            $("#d_status3").val(result.drugs.d_status);
+                            $("#d_picture3").val(result.drugs.d_picture);
+                            //修改对话框标题
+                            $("#myModalLabel2").text('上架药材')
+                            //点击编辑，显示对话框
+                            $('#myModal2').modal(); // 初始化模态框
+                            $('#myModal2').modal('open'); // 打开模态框
+
+                        }else {
+                            alert(result.message);
+                        }
+
+                    }
+                })
+            })
+        }
+        function bindXiaoBtnEvent() {
+            $("#btnSave3").click(function () {
+                var d_id = $("#d_id3").val();
+                var d_name = $("#d_name3").val();
+                var d_indication = $("#d_indication3").val();
+                var d_use = $("#d_use3").val();
+                var d_status = $("#d_status3").val();
+                var d_picture = $("#d_picture3").val();
+
+                //点击确认删除按钮
+                $.ajax({
+                    url:"/borrowDrugs",
+                    type:"GET",
+                    data:{
+                        d_id:d_id,
+                        d_name:d_name,
+                        d_indication:d_indication,
+                        d_use:d_use,
+                        d_picture:d_picture,
+                        d_status:d_status,
+                    },
+                    dataType: 'json',
+                    success:function(result) { // 成功回调函数
+                        if (result.success) {
+                            // 操作成功
+                            alert(result.msg);
+                            console.log("result.redirectUrl:",result.redirectUrl);
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            // 操作失败
+                            alert(result.msg);
+                        }
+                    },
+                    error: function() {
+                        // 请求失败，提示网络错误
+                        alert('操作信息错误，请检查操作信息是否正确，稍后再试！');
+                    }
+                })
+            })
+        }
+
+        function bindBtnEditEvent() {
+            $(".btn-edit").click(function () {
+                //清空对话框中的数据
+                $('#addForm')[0].reset();
+
+                //获取当前ID并肤质给全局变量 EDIT_ID
+                EDIT_ID=$(this).attr("uid");
+                console.log(EDIT_ID)
+                $.ajax({
+                    url:"/drugs/findBy_Id/",
+                    type:"get",
+                    data:{
+                        uid:EDIT_ID
+                    },
+                    dataType:"JSON",
+                    success: function (result) {
+                        if (result.status === "success"){
+
+                            //将数据赋值到对话框的标签中去
+                            $("#d_name1").val(result.drugs.d_name);
+                            $("#d_indication1").val(result.drugs.d_indication);
+                            $("#d_use1").val(result.drugs.d_use);
+
+                            //修改对话框标题
+                            $("#myModalLabel").text('编辑')
+                            //点击编辑，显示对话框
+                            $('#myModal').modal(); // 初始化模态框
+                            $('#myModal').modal('open'); // 打开模态框
+
+                        }else {
+                            alert(result.message);
+                        }
+
+                    }
+                })
+            })
+        }
+    </script>
+</body>
+
+</html>

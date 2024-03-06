@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmut.mapper.DrugsMapper">
+    <!--带条件的分页-->
+    <select id="findPages" resultType="Durgs">
+        select * from durgs
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="d_name!=null and d_name!='' and d_name.length!=0">
+                and d_name like concat("%",#{d_name},"%")
+            </if>
+            <if test="d_indication!=null and d_indication!='' and d_indication.length!=0">
+                and d_indication like concat("%",#{d_indication},"%")
+            </if>
+        </trim>
+    </select>
+
+    <select id="findPage" resultType="Durgs">
+        select * from durgs
+    </select>
+
+    <!--注册用户-->
+    <insert id="addDrugs">
+        insert into durgs(d_name,d_indication,d_use,d_picture,d_status)
+        values (#{d_name},#{d_indication},#{d_use},#{d_picture},#{d_status})
+    </insert>
+
+    <!--用户修改-->
+    <update id="editDrugs">
+        update durgs
+        <set>
+            <if test="d_name !=null and d_name.trim() !=''">
+                d_name=#{d_name},
+            </if>
+            <if test="d_indication !=null and d_indication.trim() !=''">
+                d_indication=#{d_indication},
+            </if>
+            <if test="d_use!=null and d_use.trim() !=''">
+                d_use=#{d_use},
+            </if>
+            <if test="d_picture !=null and d_picture.trim() !=''">
+                d_picture=#{d_picture},
+            </if>
+            <if test="d_status !=null and d_status.trim() !=''">
+                d_status=#{d_status},
+            </if>
+        </set>
+        where d_id=#{d_id}
+    </update>
+
+    <!--药材上下架-->
+    <update id="borrowDrugs">
+        update durgs
+        <set>
+            <if test="d_name !=null">
+                d_name=#{d_name},
+            </if>
+            <if test="d_indication !=null">
+                d_indication=#{d_indication},
+            </if>
+            <if test="d_use !=null">
+                d_use=#{d_use},
+            </if>
+            <if test="d_picture !=null">
+                d_picture=#{d_picture},
+            </if>
+            <if test="d_status !=null" >
+                d_status=#{d_status},
+            </if>
+        </set>
+        where d_id=#{d_id}
+    </update>
+
+
+    <select id="allfindDurgs" resultType="com.xmut.pojo.Durgs">
+        select * from durgs where d_status =1;
+    </select>
+
+
+
+</mapper>
