@@ -127,9 +127,11 @@
   </div>
 
   <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out" data-menu="menu-navigation" data-collapsible="menu-accordion">
-    <li class="active bold"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="Dashboard">药物管理</span><span class="badge badge pill orange float-right mr-10">3</span></a>
+    <li class="active bold">
+      <a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="Dashboard">药物管理</span><span class="badge badge pill orange float-right mr-10">3</span></a>
       <div class="collapsible-body">
         <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
           <li class="active">
             <a th:class="${active=='index.html'?'active':''}" th:href="@{/admin}">
             <i class="material-icons">radio_button_unchecked</i>
@@ -138,9 +140,9 @@
           </li>
 
           <li>
-            <a th:class="${active=='list.html'?'active':''}" th:href="@{/emp}">
+            <a th:class="${active=='prescript.html'?'active':''}" th:href="@{/searchPrescript}">
               <i class="material-icons">radio_button_unchecked</i>
-              <span data-i18n="eCommerce">折线图</span>
+              <span data-i18n="eCommerce">药单管理</span>
             </a>
           </li>
 
@@ -150,6 +152,7 @@
               <span data-i18n="Analytics">饼图</span>
             </a>
           </li>
+
         </ul>
       </div>
     </li>

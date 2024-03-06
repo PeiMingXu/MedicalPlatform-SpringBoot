@@ -9,4 +9,7 @@ import com.xmut.pojo.User;
 public interface UserService {
     //登陆
     public User login(User user);
+
+    //通过id查询
+    public User findById(Integer id);
 }

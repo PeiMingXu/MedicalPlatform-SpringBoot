@@ -137,18 +137,18 @@
         <!--    <version>2.9.8</version>-->
         <!--</dependency>-->
 
-        <!--&lt;!&ndash;腾讯云手机验证&ndash;&gt;-->
-        <!--<dependency>-->
-        <!--    <groupId>com.tencentcloudapi</groupId>-->
-        <!--    <artifactId>tencentcloud-sdk-java</artifactId>-->
-        <!--    <version>3.1.87</version>-->
-        <!--</dependency>-->
+        <!--腾讯云手机验证-->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java</artifactId>
+            <version>3.1.87</version>
+        </dependency>
 
-        <!--<dependency>-->
-        <!--    <groupId>com.github.qcloudsms</groupId>-->
-        <!--    <artifactId>qcloudsms</artifactId>-->
-        <!--    <version>1.0.6</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>qcloudsms</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 
 
     </dependencies>
